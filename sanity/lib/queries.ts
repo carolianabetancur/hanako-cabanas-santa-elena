@@ -70,3 +70,13 @@ export const cabinSlugsQuery = defineQuery(`
     "slug": slug.current
   }
 `)
+
+export const bookingsByCabinQuery = defineQuery(`
+  *[_type == "booking" && cabin._ref == $cabinId && status == "confirmed"] {
+    _id,
+    guestName,
+    checkIn,
+    checkOut,
+    status
+  }
+`)

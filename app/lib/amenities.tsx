@@ -8,6 +8,7 @@ import {
   Flower2,
   Sofa,
   Mountain,
+  Home,
 } from "lucide-react";
 
 export const amenityIcons: Record<
@@ -24,4 +25,5 @@ export const amenityIcons: Record<
   garden_view: { icon: <Flower2 size={16} />, label: "Vista al jardín" },
   bbq: { icon: <Flame size={16} />, label: "Asador / BBQ" },
   livingroom: { icon: <Sofa size={16} />, label: "Sala" },
+  antesala: { icon: <Home size={16} />, label: "Antesala" },
 };

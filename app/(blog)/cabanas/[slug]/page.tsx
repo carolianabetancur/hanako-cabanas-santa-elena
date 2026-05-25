@@ -8,6 +8,8 @@ import { amenityIcons } from "@/app/lib/amenities";
 import type { Cabin, CabinPhoto } from "@/app/lib/types";
 import type { ClientPerspective } from "next-sanity";
 import PhotoGallery from "./photo-gallery";
+import AvailabilityCalendar from "./availability-calendar";
+import { bookingsByCabinQuery } from "@/sanity/lib/queries";
 
 export async function generateStaticParams() {
   const cabins = await sanityFetch({
@@ -26,12 +28,18 @@ type Props = { params: Promise<{ slug: string }> };
 
 export default async function CabinPage({ params }: Props) {
   const { slug } = await params;
+
   const cabin = await sanityFetch({
     query: cabinBySlugQuery,
     params: { slug },
   });
 
   if (!cabin) notFound();
+
+  const bookings = await sanityFetch({
+    query: bookingsByCabinQuery,
+    params: { cabinId: cabin._id },
+  });
 
   const priceFormatted = new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -71,7 +79,7 @@ export default async function CabinPage({ params }: Props) {
         <PhotoGallery photos={cabin.photos} />
       )}
 
-      <section className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-12">
+      <section className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="md:col-span-2 flex flex-col gap-8">
           <div>
             <h1
@@ -132,7 +140,7 @@ export default async function CabinPage({ params }: Props) {
 
         <div className="md:col-span-1">
           <div
-            className="rounded-3xl p-6 shadow-xl sticky top-6 flex flex-col gap-4"
+            className="rounded-3xl p-4 shadow-xl sticky top-6 flex flex-col gap-3"
             style={{ background: "#5B431F" }}
           >
             <div>
@@ -169,16 +177,11 @@ export default async function CabinPage({ params }: Props) {
 
             <hr style={{ borderColor: "rgba(255,255,255,0.15)" }} />
 
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-white text-sm font-semibold transition-all hover:scale-105"
-              style={{ background: "#25D366" }}
-            >
-              <MessageCircle size={18} />
-              Reservar por WhatsApp
-            </a>
+            <AvailabilityCalendar
+              bookings={bookings}
+              cabinName={cabin.name}
+              whatsappUrl="573104966572"
+            />
 
             <p
               className="text-center text-xs"
