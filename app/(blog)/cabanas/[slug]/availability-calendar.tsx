@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
-import { es } from "date-fns/locale";
 import "react-day-picker/dist/style.css";
 
 type Booking = {
   _id: string;
-  checkIn: string;
-  checkOut: string;
+  checkIn: string | null;
+  checkOut: string | null;
 };
 
 type Props = {
@@ -20,6 +19,7 @@ type Props = {
 function getDisabledDays(bookings: Booking[]) {
   const disabled: { from: Date; to: Date }[] = [];
   for (const booking of bookings) {
+    if (!booking.checkIn || !booking.checkOut) continue;
     disabled.push({
       from: new Date(booking.checkIn),
       to: new Date(booking.checkOut),
@@ -113,7 +113,6 @@ export default function AvailabilityCalendar({
         mode="range"
         selected={range}
         onSelect={setRange}
-        locale={es}
         disabled={[{ before: new Date() }, ...disabledDays]}
         modifiersStyles={{
           disabled: {
@@ -121,7 +120,7 @@ export default function AvailabilityCalendar({
             opacity: 0.4,
           },
         }}
-        fromMonth={new Date()}
+        startMonth={new Date()}
       />
 
       {range?.from && (
