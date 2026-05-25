@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { toPlainText } from "next-sanity";
 import { VisualEditing } from "next-sanity";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import { draftMode } from "next/headers";
 import * as demo from "@/sanity/lib/demo";
 import { sanityFetch } from "@/sanity/lib/fetch";
@@ -59,6 +59,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
 export default async function RootLayout({
   children,
 }: {
@@ -66,7 +73,11 @@ export default async function RootLayout({
 }) {
   const { isEnabled: isDraftMode } = await draftMode();
   return (
-    <html lang="es" className={`${inter.variable} bg-white text-black`}>
+    <html
+      lang="es"
+      className={`${inter.variable} ${poppins.variable} bg-white text-black`}
+    >
+      {" "}
       <body>
         <section className="min-h-screen">
           <main>{children}</main>

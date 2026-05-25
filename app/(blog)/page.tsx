@@ -14,9 +14,10 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { cabinsQuery } from "@/sanity/lib/queries";
 import ContactForm from "./contact-form";
 import { amenityIcons } from "@/app/lib/amenities";
-import Link from "@/node_modules/next/link";
+import Link from "next/link";
 import type { Cabin } from "@/app/lib/types";
 import { optimizeImage } from "@/app/lib/image";
+import LazyMap from "./lazy-map";
 
 const highlights = [
   { icon: <Leaf size={28} />, label: "Naturaleza pura" },
@@ -38,7 +39,7 @@ export default async function Page() {
   const cabins = await sanityFetch({ query: cabinsQuery });
 
   return (
-    <main style={{ fontFamily: "'Poppins', sans-serif" }}>
+    <main className="font-[var(--font-poppins)]">
       <section className="relative h-screen min-h-[600px] flex items-center justify-center text-white">
         <Image
           src="/hero.jpg"
@@ -239,18 +240,7 @@ export default async function Page() {
           <p className="text-center text-gray-500 mb-10">
             Santa Elena, Medellín · A 30 minutos del centro
           </p>
-          <div className="rounded-3xl overflow-hidden shadow-lg">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15885.123456789!2d-75.5012!3d6.2159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4429b2e8b1c3d5%3A0x1234567890abcdef!2sSanta%20Elena%2C%20Medell%C3%ADn!5e0!3m2!1ses!2sco!4v1234567890"
-              width="100%"
-              height="400"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ubicación Hanako - Santa Elena, Medellín"
-            />
-          </div>
+          <LazyMap />
           <div className="flex items-center justify-center gap-2 mt-6">
             <a
               href="https://maps.google.com/?q=Santa+Elena+Medellín"
