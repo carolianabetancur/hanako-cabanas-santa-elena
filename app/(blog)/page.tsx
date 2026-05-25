@@ -16,6 +16,7 @@ import ContactForm from "./contact-form";
 import { amenityIcons } from "@/app/lib/amenities";
 import Link from "@/node_modules/next/link";
 import type { Cabin } from "@/app/lib/types";
+import { optimizeImage } from "@/app/lib/image";
 
 const highlights = [
   { icon: <Leaf size={28} />, label: "Naturaleza pura" },
@@ -41,10 +42,12 @@ export default async function Page() {
       <section className="relative h-screen min-h-[600px] flex items-center justify-center text-white">
         <Image
           src="/hero.jpg"
-          alt="Atardecer en Santa Elena"
+          alt="Atardecer en Santa Elena - Hanako Cabañas"
           fill
           className="object-cover object-center"
           priority
+          sizes="100vw"
+          quality={85}
         />
         <div
           className="absolute inset-0"
@@ -127,7 +130,7 @@ export default async function Page() {
                   {cabin.photos?.[0]?.url && (
                     <div className="relative h-64 w-full">
                       <Image
-                        src={cabin.photos[0].url}
+                        src={optimizeImage(cabin.photos[0].url!, 800)}
                         alt={cabin.photos[0].alt ?? cabin.name ?? "Cabaña"}
                         fill
                         className="object-cover"
