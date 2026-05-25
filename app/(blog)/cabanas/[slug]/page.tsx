@@ -7,6 +7,7 @@ import { cabinBySlugQuery, cabinSlugsQuery } from "@/sanity/lib/queries";
 import { amenityIcons } from "@/app/lib/amenities";
 import type { Cabin, CabinPhoto } from "@/app/lib/types";
 import type { ClientPerspective } from "next-sanity";
+import PhotoGallery from "./photo-gallery";
 
 export async function generateStaticParams() {
   const cabins = await sanityFetch({
@@ -67,39 +68,7 @@ export default async function CabinPage({ params }: Props) {
       </nav>
 
       {cabin.photos && cabin.photos.length > 0 && (
-        <section>
-          <div className="relative w-full h-[55vh]">
-            <Image
-              src={cabin.photos[0].url!}
-              alt={cabin.photos[0].alt ?? cabin.name ?? "Cabaña"}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(91,67,31,0.4), transparent)",
-              }}
-            />
-          </div>
-
-          {cabin.photos.length > 1 && (
-            <div className="grid grid-cols-4 gap-1 mt-1 px-1">
-              {cabin.photos.slice(1).map((photo: CabinPhoto, i: number) => (
-                <div key={i} className="relative h-32 md:h-44">
-                  <Image
-                    src={photo.url!}
-                    alt={photo.alt ?? `Foto ${i + 2}`}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+        <PhotoGallery photos={cabin.photos} />
       )}
 
       <section className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-12">
