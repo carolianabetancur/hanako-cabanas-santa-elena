@@ -130,6 +130,7 @@ export default async function CabinPage({ params }: Props) {
                     >
                       <span style={{ color: "#F96F00" }}>{a?.icon}</span>
                       {a?.label ?? amenity}
+                      {console.log("aaaa", a?.label)}
                     </div>
                   );
                 })}
