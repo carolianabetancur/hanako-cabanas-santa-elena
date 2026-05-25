@@ -341,11 +341,6 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = Cabin | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./app/(blog)/posts/[slug]/page.tsx
-// Variable: postSlugs
-// Query: *[_type == "post" && defined(slug.current)]{"slug": slug.current}
-export type PostSlugsResult = Array<never>;
-
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
 // Query: *[_type == "settings"][0]
@@ -416,15 +411,52 @@ export type MoreStoriesQueryResult = Array<never>;
 // Variable: postQuery
 // Query: *[_type == "post" && slug.current == $slug] [0] {    content,      _id,  "status": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  coverImage,  "date": coalesce(date, _updatedAt),  "author": author->{"name": coalesce(name, "Anonymous"), picture},  }
 export type PostQueryResult = null;
+// Variable: cabinsQuery
+// Query: *[_type == "cabin"] | order(name asc) {    _id,    name,    "slug": slug.current,    description,    pricePerNight,    maxGuests,    amenities,    "photos": photos[] {      alt,      "url": asset->url    }  }
+export type CabinsQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  description: string | null;
+  pricePerNight: number | null;
+  maxGuests: number | null;
+  amenities: Array<string> | null;
+  photos: Array<{
+    alt: string | null;
+    url: string | null;
+  }> | null;
+}>;
+// Variable: cabinBySlugQuery
+// Query: *[_type == "cabin" && slug.current == $slug][0] {    _id,    name,    "slug": slug.current,    description,    pricePerNight,    maxGuests,    amenities,    "photos": photos[] {      alt,      "url": asset->url    }  }
+export type CabinBySlugQueryResult = {
+  _id: string;
+  name: string | null;
+  slug: string | null;
+  description: string | null;
+  pricePerNight: number | null;
+  maxGuests: number | null;
+  amenities: Array<string> | null;
+  photos: Array<{
+    alt: string | null;
+    url: string | null;
+  }> | null;
+} | null;
+// Variable: cabinSlugsQuery
+// Query: *[_type == "cabin" && defined(slug.current)] {    "slug": slug.current  }
+export type CabinSlugsQueryResult = Array<{
+  slug: string | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"post\" && defined(slug.current)]{\"slug\": slug.current}": PostSlugsResult;
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == \"post\" && defined(slug.current)] | order(date desc, _updatedAt desc) [0] {\n    content,\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n\n  }\n": HeroQueryResult;
     "\n  *[_type == \"post\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n\n  }\n": MoreStoriesQueryResult;
     "\n  *[_type == \"post\" && slug.current == $slug] [0] {\n    content,\n    \n  _id,\n  \"status\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  coverImage,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{\"name\": coalesce(name, \"Anonymous\"), picture},\n\n  }\n": PostQueryResult;
+    "\n  *[_type == \"cabin\"] | order(name asc) {\n    _id,\n    name,\n    \"slug\": slug.current,\n    description,\n    pricePerNight,\n    maxGuests,\n    amenities,\n    \"photos\": photos[] {\n      alt,\n      \"url\": asset->url\n    }\n  }\n": CabinsQueryResult;
+    "\n  *[_type == \"cabin\" && slug.current == $slug][0] {\n    _id,\n    name,\n    \"slug\": slug.current,\n    description,\n    pricePerNight,\n    maxGuests,\n    amenities,\n    \"photos\": photos[] {\n      alt,\n      \"url\": asset->url\n    }\n  }\n": CabinBySlugQueryResult;
+    "\n  *[_type == \"cabin\" && defined(slug.current)] {\n    \"slug\": slug.current\n  }\n": CabinSlugsQueryResult;
   }
 }
