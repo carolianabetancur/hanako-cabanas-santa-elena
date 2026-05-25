@@ -13,6 +13,24 @@
  */
 
 // Source: schema.json
+export type Booking = {
+  _id: string;
+  _type: "booking";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  cabin?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "cabin";
+  };
+  guestName?: string;
+  checkIn?: string;
+  checkOut?: string;
+  status?: "confirmed" | "pending" | "cancelled";
+};
+
 export type Cabin = {
   _id: string;
   _type: "cabin";
@@ -339,7 +357,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Cabin | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Booking | Cabin | Settings | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -446,6 +464,15 @@ export type CabinBySlugQueryResult = {
 export type CabinSlugsQueryResult = Array<{
   slug: string | null;
 }>;
+// Variable: bookingsByCabinQuery
+// Query: *[_type == "booking" && cabin._ref == $cabinId && status == "confirmed"] {    _id,    guestName,    checkIn,    checkOut,    status  }
+export type BookingsByCabinQueryResult = Array<{
+  _id: string;
+  guestName: string | null;
+  checkIn: string | null;
+  checkOut: string | null;
+  status: "cancelled" | "confirmed" | "pending" | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -458,5 +485,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"cabin\"] | order(name asc) {\n    _id,\n    name,\n    \"slug\": slug.current,\n    description,\n    pricePerNight,\n    maxGuests,\n    amenities,\n    \"photos\": photos[] {\n      alt,\n      \"url\": asset->url\n    }\n  }\n": CabinsQueryResult;
     "\n  *[_type == \"cabin\" && slug.current == $slug][0] {\n    _id,\n    name,\n    \"slug\": slug.current,\n    description,\n    pricePerNight,\n    maxGuests,\n    amenities,\n    \"photos\": photos[] {\n      alt,\n      \"url\": asset->url\n    }\n  }\n": CabinBySlugQueryResult;
     "\n  *[_type == \"cabin\" && defined(slug.current)] {\n    \"slug\": slug.current\n  }\n": CabinSlugsQueryResult;
+    "\n  *[_type == \"booking\" && cabin._ref == $cabinId && status == \"confirmed\"] {\n    _id,\n    guestName,\n    checkIn,\n    checkOut,\n    status\n  }\n": BookingsByCabinQueryResult;
   }
 }

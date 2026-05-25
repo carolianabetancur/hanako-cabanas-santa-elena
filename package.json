@@ -30,6 +30,7 @@
     "next-sanity": "^9.7.0",
     "postcss": "^8.4.47",
     "react": "^19",
+    "react-day-picker": "^10.0.1",
     "react-dom": "^19",
     "sanity": "^3.62.0",
     "sanity-plugin-asset-source-unsplash": "^3.0.1",

@@ -69,7 +69,7 @@ export const cabinSchema = defineType({
           { title: '🌄 Vista al bosque', value: 'forest_view' },
           { title: '🌄 Vista al jardín', value: 'garden_view' },
           { title: '🔥 BBQ', value: 'bbq' },
-          { title: '🍳 Antesala', value: 'livingroom' },
+          { title: '🛋️ Antesala', value: 'antesala' },
         ]
       }
     }),

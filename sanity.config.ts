@@ -16,6 +16,7 @@ import { assistWithPresets } from "@/sanity/plugins/assist";
 import { cabinSchema } from "@/sanity/schemas/documents/cabin";
 import settings from "@/sanity/schemas/singletons/settings";
 import { resolveHref } from "@/sanity/lib/utils";
+import { bookingSchema } from "./sanity/schemas/documents/booking";
 
 const homeLocation = {
   title: "Home",
@@ -30,6 +31,7 @@ export default defineConfig({
     types: [
       settings,
       cabinSchema,
+      bookingSchema,
     ],
   },
   plugins: [
