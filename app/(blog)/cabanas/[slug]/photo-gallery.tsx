@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import { optimizeImage } from "@/app/lib/image";
 
 type Photo = {
   url: string | null;
@@ -24,7 +25,7 @@ export default function PhotoGallery({ photos }: { photos: Photo[] }) {
         onClick={() => setIndex(0)}
       >
         <Image
-          src={photos[0].url!}
+          src={optimizeImage(photos[0].url!, 800)}
           alt={photos[0].alt ?? "Cabaña"}
           fill
           className="object-cover"

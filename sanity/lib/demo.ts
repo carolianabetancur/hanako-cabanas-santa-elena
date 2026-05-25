@@ -1,59 +1,19 @@
-/**
- * Demo data used as placeholders and initial values for the blog
- */
-
-export const title = "Blog.";
-
+// sanity/lib/demo.ts
+export const title = "Hanako Cabañas Santa Elena";
 export const description = [
   {
-    _key: "9f1a629887fd",
+    _key: "hanako_desc_1",
     _type: "block",
     children: [
       {
-        _key: "4a58edd077880",
+        _key: "hanako_span_1",
         _type: "span",
         marks: [],
-        text: "A statically generated blog example using ",
-      },
-      {
-        _key: "4a58edd077881",
-        _type: "span",
-        marks: ["ec5b66c9b1e0"],
-        text: "Next.js",
-      },
-      {
-        _key: "4a58edd077882",
-        _type: "span",
-        marks: [],
-        text: " and ",
-      },
-      {
-        _key: "4a58edd077883",
-        _type: "span",
-        marks: ["1f8991913ea8"],
-        text: "Sanity",
-      },
-      {
-        _key: "4a58edd077884",
-        _type: "span",
-        marks: [],
-        text: ".",
+        text: "Cabañas de descanso en Santa Elena, Medellín. Naturaleza, tranquilidad y confort a 30 minutos de la ciudad.",
       },
     ],
-    markDefs: [
-      {
-        _key: "ec5b66c9b1e0",
-        _type: "link",
-        href: "https://nextjs.org/",
-      },
-      {
-        _key: "1f8991913ea8",
-        _type: "link",
-        href: "https://sanity.io/",
-      },
-    ],
+    markDefs: [],
     style: "normal",
   },
 ];
-
-export const ogImageTitle = "A Next.js Blog with a Native Authoring Experience";
+export const ogImageTitle = "Hanako Cabañas Santa Elena — Naturaleza y descanso";

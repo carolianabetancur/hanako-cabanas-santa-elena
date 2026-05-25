@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     metadataBase = settings?.ogImage?.metadataBase
       ? new URL(settings.ogImage.metadataBase)
-      : undefined;
+      : new URL("https://hanako-cabanas-santa-elena.vercel.app"); // 👈 fallback fijo
   } catch {
     // ignore
   }
@@ -35,7 +35,21 @@ export async function generateMetadata(): Promise<Metadata> {
     description: toPlainText(description as any),
     openGraph: {
       images: ogImage ? [ogImage] : [],
+      siteName: title,
+      locale: "es_CO",
+      type: "website",
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    keywords: [
+      "cabañas Santa Elena",
+      "Medellín ecoturismo",
+      "cabañas Medellín",
+      "descanso naturaleza Antioquia",
+      "Hanako cabañas",
+    ],
   };
 }
 

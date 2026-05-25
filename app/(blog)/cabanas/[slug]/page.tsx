@@ -1,15 +1,14 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Flame, Wifi, ArrowLeft, Users, MessageCircle } from "lucide-react";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { cabinBySlugQuery, cabinSlugsQuery } from "@/sanity/lib/queries";
 import { amenityIcons } from "@/app/lib/amenities";
-import type { Cabin, CabinPhoto } from "@/app/lib/types";
 import type { ClientPerspective } from "next-sanity";
 import PhotoGallery from "./photo-gallery";
 import AvailabilityCalendar from "./availability-calendar";
 import { bookingsByCabinQuery } from "@/sanity/lib/queries";
+import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   const cabins = await sanityFetch({
@@ -20,6 +19,29 @@ export async function generateStaticParams() {
   return cabins.map((cabin: { slug: string | null }) => ({
     slug: cabin.slug ?? "",
   }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const cabin = await sanityFetch({
+    query: cabinBySlugQuery,
+    params: { slug },
+    stega: false,
+  });
+
+  if (!cabin) return {};
+
+  return {
+    title: `${cabin.name} | Hanako Cabañas Santa Elena`,
+    description:
+      cabin.description ??
+      `Reserva ${cabin.name} en Santa Elena, Medellín. Naturaleza, paz y tranquilidad a 30 minutos de la ciudad.`,
+    openGraph: {
+      title: cabin.name ?? "Cabaña",
+      description: cabin.description ?? "",
+      images: cabin.photos?.[0]?.url ? [cabin.photos[0].url] : [],
+    },
+  };
 }
 
 export const revalidate = 60;
@@ -46,10 +68,6 @@ export default async function CabinPage({ params }: Props) {
     currency: "COP",
     maximumFractionDigits: 0,
   }).format(cabin.pricePerNight ?? 0);
-
-  const whatsappUrl = `https://wa.me/573104966572?text=${encodeURIComponent(
-    `Hola! Me interesa reservar la ${cabin.name}`,
-  )}`;
 
   return (
     <main
