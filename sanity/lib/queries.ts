@@ -32,3 +32,41 @@ export const postQuery = defineQuery(`
     ${postFields}
   }
 `);
+
+export const cabinsQuery = defineQuery(`
+  *[_type == "cabin"] | order(name asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    pricePerNight,
+    maxGuests,
+    amenities,
+    "photos": photos[] {
+      alt,
+      "url": asset->url
+    }
+  }
+`);
+
+export const cabinBySlugQuery = defineQuery(`
+  *[_type == "cabin" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    description,
+    pricePerNight,
+    maxGuests,
+    amenities,
+    "photos": photos[] {
+      alt,
+      "url": asset->url
+    }
+  }
+`)
+
+export const cabinSlugsQuery = defineQuery(`
+  *[_type == "cabin" && defined(slug.current)] {
+    "slug": slug.current
+  }
+`)
